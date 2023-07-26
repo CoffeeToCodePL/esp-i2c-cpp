@@ -1,4 +1,4 @@
-# esp32-i2c
+# esp-i2c-cpp
 
 Simple C++ wrapper around ESP-IDF I2C driver.
 
@@ -12,11 +12,10 @@ version of GCC compiler. This module was developed with ESP-IDF 5.0.2 which incl
 
 # How to use this repository
 
-It is intended to be used as additional component in ESP-IDF based projects. It can be either cloned and copied or
-clones as a git submodule to the target project repository.
+It is intended to be used as additional component in ESP-IDF based projects. It can be either cloned as a git submodule or copied to the target project repository.
 
 Next, you should set `EXTRA_COMPONENT_DIRS` variable in your primary `CMakeLists.txt`. For example, if you cloned the
-code into `external/esp32-i2c` subdirectory:
+code into `external/esp-i2c-cpp` subdirectory:
 
 ```
 set(EXTRA_COMPONENT_DIRS "external") # ESP-IDF searches for components recursively
@@ -28,7 +27,7 @@ Finally, in the `CMakeLists.txt` of component using this wrapper, you should set
 idf_component_register(
         SRCS "YourSource.cpp"
         INCLUDE_DIRS "."
-        REQUIRES esp32-i2c
+        REQUIRES esp-i2c-cpp
 )
 ```
 
