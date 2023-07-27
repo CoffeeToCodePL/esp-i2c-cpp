@@ -31,9 +31,9 @@ namespace I2C {
   /**
    * Default configuration options.
    */
-  namespace Config {
-    constexpr uint32_t DefaultClockSpeed = 100000;
-    constexpr uint32_t DefaultTimeout = 1000;
+  namespace Defaults {
+    static constexpr uint32_t ClockSpeed = 100000;
+    static constexpr uint32_t Timeout = 1000;
   }
 
   /**
@@ -44,27 +44,28 @@ namespace I2C {
   class Master
   {
   public:
-    explicit Master(i2c_port_t port);
+    Master() = default;
+    ~Master() = default;
     Master(const Master& master) = delete;
     Master(const Master&& master) = delete;
-    ~Master();
 
-    [[nodiscard]] esp_err_t initialize(gpio_num_t sdaPin,
+    [[nodiscard]] esp_err_t initialize(i2c_port_t i2cPort,
+                                       gpio_num_t sdaPin,
                                        gpio_num_t sclPin,
-                                       uint32_t clockSpeed = I2C::Config::DefaultClockSpeed) const;
-    void reset() const;
+                                       uint32_t clockSpeed = I2C::Defaults::ClockSpeed);
+    void reset();
 
     [[nodiscard]] esp_err_t readBytes(uint8_t deviceAddress,
                                       uint8_t registerAddress,
                                       const std::span<uint8_t>& buffer,
-                                      uint32_t timeout = I2C::Config::DefaultTimeout) const;
+                                      uint32_t timeout = I2C::Defaults::Timeout) const;
     [[nodiscard]] esp_err_t writeBytes(uint8_t deviceAddress,
                                        uint8_t registerAddress,
                                        const std::span<const uint8_t>& data,
-                                       uint32_t timeout = I2C::Config::DefaultTimeout) const;
+                                       uint32_t timeout = I2C::Defaults::Timeout) const;
 
   private:
-    const i2c_port_t port;
+    i2c_port_t port{ -1 };
   };
 }
 

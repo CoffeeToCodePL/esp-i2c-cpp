@@ -44,37 +44,19 @@ namespace {
 }
 
 /**
- * @brief Creates new I2C master instance for given port.
- *
- * @param port I2C port used by a wrapper instance.
- */
-I2C::Master::Master(const i2c_port_t port)
-  : port(port)
-{
-}
-
-/**
- * @brief Destructs I2C master instance.
- *
- * @see I2C::Master::reset
- */
-I2C::Master::~Master()
-{
-  reset();
-}
-
-/**
  * @brief Initializes I2C master instance with given parameters.
  *
+ * @param i2cPort ESP32 I2C port number
  * @param sdaPin ESP32 GPIO pin used as SDA pin
  * @param sclPin ESP32 GPIO pin used as SCL pin
  * @param clockSpeed I2C clock speed
  *
  * @return ESP_OK if initialization is successfully finished, ESP_FAIL otherwise
  */
-esp_err_t I2C::Master::initialize(const gpio_num_t sdaPin,
+esp_err_t I2C::Master::initialize(const i2c_port_t i2cPort,
+                                  const gpio_num_t sdaPin,
                                   const gpio_num_t sclPin,
-                                  const uint32_t clockSpeed) const
+                                  const uint32_t clockSpeed)
 {
   const i2c_config_t config = {
     .mode = I2C_MODE_MASTER,
@@ -87,6 +69,7 @@ esp_err_t I2C::Master::initialize(const gpio_num_t sdaPin,
     },
     .clk_flags = I2C_SCLK_SRC_FLAG_FOR_NOMAL,
   };
+  port = i2cPort;
 
   if (i2c_param_config(port, &config) != ESP_OK) {
     return ESP_FAIL;
@@ -102,9 +85,10 @@ esp_err_t I2C::Master::initialize(const gpio_num_t sdaPin,
 /**
  * @brief Resets I2C master instance.
  */
-void I2C::Master::reset() const
+void I2C::Master::reset()
 {
   i2c_driver_delete(port);
+  port = -1;
 }
 
 /**
