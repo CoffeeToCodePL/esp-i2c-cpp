@@ -88,7 +88,7 @@ esp_err_t I2C::Master::initialize(const i2c_port_t i2cPort,
 void I2C::Master::reset()
 {
   i2c_driver_delete(port);
-  port = -1;
+  port = I2C_NUM_MAX;
 }
 
 /**

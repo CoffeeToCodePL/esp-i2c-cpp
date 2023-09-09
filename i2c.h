@@ -65,7 +65,7 @@ namespace I2C {
                                        uint32_t timeout = I2C::Defaults::Timeout) const;
 
   private:
-    i2c_port_t port{ -1 };
+    i2c_port_t port{ I2C_NUM_MAX };
   };
 }
 
